@@ -1,6 +1,6 @@
+
 import requests
 import mysql.connector
-import json
 #import bip39
 
 class foodchain:
@@ -9,16 +9,13 @@ class foodchain:
         self.username = username
         self.pass_key = pass_key
 
-
         mydb = mysql.connector.connect(
-                host="127.0.0.1",
-                user="root",
-                password="password",
-                database="foodchain",
-                port=3306
+         host="10.221.190.28",
+         user="root",
+         password="",
+         database="foodchain"
         )
-        
-        if mysql:
+        if(mysql):
             print("connected")
         cursor = mydb.cursor()
         cursor.execute('select * from foodchain.users where username="'+self.username+'" && pass_key="'+self.pass_key+'" ')
@@ -27,26 +24,16 @@ class foodchain:
         if len(user) == 0:
             raise "You are not an authinticated user"
 
-        #get private and public key
-        r = requests.post(self.url+":8000/get_user_api/",data={"pass_key":self.pass_key}).text;
-        key = json.loads(r)["id"]
-        self.public_key = key["publicKey"]
-        self.private_key = key["privateKey"]
-
-        #done
+        #import bip39 and generate public and private key
+        key = None # puy the private and public key in hear
+        #DONE
 
     def create(self,grower,company,package):
         #create a transaction
-        create_transaction = requests.post(self.url+":8000/new_asset_api",data={'grower':grower,
+        create_transaction = requests.post(self.url+"/new_asset",data={'grower':grower,
                                                                        'package':package,
                                                                        'company':company,
-                                                                       }).text
-        #use bigchaindb_driver api 
-        #how to send the key alongside with the data
-
-
-        print(create_transaction)
-
+                                                                      })
         #if the transaction is succesful return txid
         #get the data from the response
         #DONE 
@@ -64,12 +51,9 @@ class foodchain:
         #returns sucesses
         #DONE
         pass
-    def view_asset(self,tx_id):
-        #detail for a single item thes thing
-        pass
 
     def history(self,tx_id):
-        #returns the previous holders of the assets
+        #returns the previous holders of the asset
         print("this is a tes for the history")
 
 

@@ -1,11 +1,12 @@
+#!/usr/bin/python3
 
-from  Foodchain import foodchain
+from Foodchain import foodchain
 
+fc = foodchain("http://127.0.0.1",'corp','ftf')
 
-fc = foodchain("http://test.com","corp","ftf")
+#transfer assets in the car
 
-fc.history(2324)
+#print(dir(foodchain))
 
-
-
+print(fc.history("334565432"))
 
