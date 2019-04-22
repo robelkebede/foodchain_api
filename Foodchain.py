@@ -79,13 +79,8 @@ class foodchain:
 
         print(fulfilled_creation_tx)
 
-        #I THINK THE PROBLEM WITH TRANSFER ASSET AND CREATE TRANSACTION IN API ARE THE SAME
-
         return fulfilled_creation_tx
 
-        #if the transaction is succesful return txid
-        #get the data from the response
-        #DONE 
 
     def all_assets(self):
         #return all users asset
@@ -93,20 +88,19 @@ class foodchain:
         pass
 
     def transfer(self,tx_id,send_to):
-        #accepts private key and pulic key
-        """transfer_asset = requests.post(self.url+":8000/transfer",data={'tx_id':tx_id,
-                                                    'public_key':self.public_key,
-                                                                   'private':self.private_key
-                                                                 }) """
 
         creation_tx = self.bdb.transactions.retrieve(tx_id)
 
-        asset_id  =creation_tx['id']
+        asset_id  = creation_tx['id']
 
 
         transfer_asset = {
                 'id':asset_id
-            }
+         }
+
+        metaData = {"action":"Transfer asset",
+                  "date" :"test"
+        }
 
         output_index = 0
 
@@ -121,11 +115,14 @@ class foodchain:
              'owners_before': output['public_keys'],
         }
 
+
+
         prepared_transfer_tx = self.bdb.transactions.prepare(
             operation='TRANSFER',
             asset=transfer_asset,
             inputs=transfer_input,
             recipients=send_to,
+            metadata=metaData
          )
 
         fulfilled_transfer_tx = self.bdb.transactions.fulfill(
@@ -137,9 +134,9 @@ class foodchain:
          
         print(sent_transfer_tx == fulfilled_transfer_tx)
 
-        #returns sucesses
-        #DONE
-        pass
+
+        return fulfilled_transfer_tx
+
     def view_asset(self,tx_id):
         #detail for a single item thes thing
         name=self.bdb.assets.get(search=key)
