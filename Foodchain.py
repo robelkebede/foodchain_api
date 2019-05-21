@@ -7,8 +7,7 @@ import json
 bdb_root_url = "http://127.0.0.1:9984"
 
 class foodchain:
-    def __init__(self,url,username,pass_key):
-        self.url = url
+    def __init__(self,username,pass_key):
         self.username = username
         self.pass_key = pass_key
         self.bdb = BigchainDB(bdb_root_url)
@@ -32,7 +31,7 @@ class foodchain:
             raise "You are not an authinticated user"
 
         #get private and public key
-        r = requests.post(self.url+":8000/get_user_api/",data={"pass_key":self.pass_key}).text;
+        r = requests.post("http://127.0.0.1:8000/get_user_api/",data={"pass_key":self.pass_key}).text;
         key = json.loads(r)["id"]
         self.public_key = key["publicKey"]
         self.private_key = key["privateKey"]

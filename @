@@ -6,7 +6,7 @@ import time
 from pymongo import MongoClient
 
 
-fc = foodchain('corp','ftf')
+fc = foodchain("http://127.0.0.1",'corp','ftf')
 
 
 print(fc)
